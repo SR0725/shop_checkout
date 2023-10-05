@@ -7,7 +7,7 @@ export const createPurchasedItems = (productIDs, productPriceMap) => {
   const purchasedItems = productIDs
     .map((id) => {
       const product = productPriceMap.products[id];
-      if (product) {
+      if (product && typeof product === "object" && product.price) {
         return {
           id,
           price: product.price,

@@ -124,6 +124,7 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.createPurchasedItems = void 0;
+function _typeof(o) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (o) { return typeof o; } : function (o) { return o && "function" == typeof Symbol && o.constructor === Symbol && o !== Symbol.prototype ? "symbol" : typeof o; }, _typeof(o); }
 /**
  * @param {string[]} productIDs
  * @param {object} productPriceMap
@@ -132,7 +133,7 @@ exports.createPurchasedItems = void 0;
 var createPurchasedItems = exports.createPurchasedItems = function createPurchasedItems(productIDs, productPriceMap) {
   var purchasedItems = productIDs.map(function (id) {
     var product = productPriceMap.products[id];
-    if (product) {
+    if (product && _typeof(product) === "object" && product.price) {
       return {
         id: id,
         price: product.price,
@@ -271,6 +272,7 @@ var _createPurchasedItems = require("./createPurchasedItems");
 var _evaluatePromotion = require("./evaluatePromotion1");
 var _evaluatePromotion2 = require("./evaluatePromotion2");
 var _pipe = require("./pipe");
+function _typeof(o) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (o) { return typeof o; } : function (o) { return o && "function" == typeof Symbol && o.constructor === Symbol && o !== Symbol.prototype ? "symbol" : typeof o; }, _typeof(o); }
 /**
  *
  * @param {string[]} productIDs
@@ -280,6 +282,9 @@ var _pipe = require("./pipe");
 var checkout = exports.checkout = function checkout() {
   var productIDs = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : [];
   var productPriceMap = arguments.length > 1 ? arguments[1] : undefined;
+  if (!productPriceMap || _typeof(productPriceMap) !== "object") {
+    throw new Error("Invalid productPriceMap");
+  }
   var purchasedItems = (0, _createPurchasedItems.createPurchasedItems)(productIDs, productPriceMap);
   var discountedItems = (0, _pipe.pipe)(_evaluatePromotion.evaluatePromotion1, _evaluatePromotion2.evaluatePromotion2)(purchasedItems);
   var total = Object.values(discountedItems).reduce(function (total, item) {
@@ -344,7 +349,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "59973" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "59918" + '/');
   ws.onmessage = function (event) {
     checkedAssets = {};
     assetsToAccept = [];

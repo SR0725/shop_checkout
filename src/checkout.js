@@ -10,6 +10,10 @@ import { pipe } from "./pipe";
  * @returns number
  */
 export const checkout = (productIDs = [], productPriceMap) => {
+  if (!productPriceMap || typeof productPriceMap !== "object") {
+    throw new Error("Invalid productPriceMap");
+  }
+  
   const purchasedItems = createPurchasedItems(productIDs, productPriceMap);
   const discountedItems = pipe(
     evaluatePromotion1,
