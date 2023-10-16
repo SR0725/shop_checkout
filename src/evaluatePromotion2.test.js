@@ -1,78 +1,51 @@
 import { evaluatePromotion2 } from "./evaluatePromotion2";
+import { createItem } from "./createItem";
 
-describe("evaluatePromotion2", () => {
-  it("should apply Promotion 2 correctly and record discount information", () => {
-    const purchasedItems = [
-      { id: "003", price: 82.5, isDiscount: true, combinationList: ["003"] },
-      { id: "002", price: 50, isDiscount: false, combinationList: [] },
-      { id: "003", price: 55, isDiscount: false, combinationList: [] },
-      { id: "004", price: 60, isDiscount: false, combinationList: [] },
-    ];
+describe("When evaluating Promotion 2", () => {
+  describe("Given 3 colas, 2 Royals, and 1 Fanta", () => {
+    it("Then apply 5 dollar discount to other no discount product", () => {
+      const purchasedItems = [
+        createItem("003", "Cola", 55, 0, true),
+        createItem("002", "Royal", 50, 0, false),
+        createItem("003", "Cola", 55, 27.5, true),
+        createItem("003", "Cola", 55, 0, false),
+        createItem("004", "Fanta", 60, 0, false),
+      ];
 
-    const expectedItemsAfterPromotion = [
-      { id: "003", price: 82.5, isDiscount: true, combinationList: ["003"] },
-      {
-        id: "002",
-        price: 150,
-        isDiscount: true,
-        combinationList: ["003", "004"],
-      },
-    ];
+      const expectedDiscountedItems =[
+        createItem("003", "Cola", 55, 0, true),
+        createItem("002", "Royal", 50, 5, true),
+        createItem("003", "Cola", 55, 27.5, true),
+        createItem("003", "Cola", 55, 5, true),
+        createItem("004", "Fanta", 60, 5, true),
+      ];
 
-    const itemsAfterPromotion = evaluatePromotion2(purchasedItems);
-    expect(itemsAfterPromotion).toEqual(expectedItemsAfterPromotion);
+      const itemsAfterPromotion = evaluatePromotion2(purchasedItems);
+      expect(itemsAfterPromotion).toEqual(expectedDiscountedItems);
+    });
   });
 
-  it("should handle items with no discount", () => {
-    const purchasedItems = [
-      { id: "002", price: 50, isDiscount: false, combinationList: [] },
-      { id: "004", price: 60, isDiscount: false, combinationList: [] },
-    ];
+  describe("Given 1 colas, 1 Royals", () => {
+    it("Then not apply any discount", () => {
+      const purchasedItems = [
+        createItem("002", "Royal", 50, 0, false),
+        createItem("003", "Cola", 55, 0, false),
+      ];
 
-    const expectedItemsAfterPromotion = [
-      { id: "002", price: 50, isDiscount: false, combinationList: [] },
-      { id: "004", price: 60, isDiscount: false, combinationList: [] },
-    ];
+      const expectedDiscountedItems = purchasedItems;
 
-    const itemsAfterPromotion = evaluatePromotion2(purchasedItems);
-    expect(itemsAfterPromotion).toEqual(expectedItemsAfterPromotion);
+      const itemsAfterPromotion = evaluatePromotion2(purchasedItems);
+      expect(itemsAfterPromotion).toEqual(expectedDiscountedItems);
+    });
   });
 
-  it("should handle an empty list of purchased items", () => {
-    const purchasedItems = [];
+  describe("Given Nothing", () => {
+    it("Then handle an empty list of products gracefully", () => {
+      const purchasedItems = [];
+      const expectedDiscountedItems = [];
 
-    const expectedItemsAfterPromotion = [];
-
-    const itemsAfterPromotion = evaluatePromotion2(purchasedItems);
-    expect(itemsAfterPromotion).toEqual(expectedItemsAfterPromotion);
-  });
-
-  it("should handle items with multiple duplicates", () => {
-    const purchasedItems = [
-      { id: "003", price: 82.5, isDiscount: true, combinationList: ["003"] },
-      { id: "003", price: 82.5, isDiscount: true, combinationList: ["003"] },
-      { id: "003", price: 82.5, isDiscount: true, combinationList: ["003"] },
-      { id: "002", price: 75, isDiscount: true, combinationList: ["002"] },
-      { id: "002", price: 50, isDiscount: false, combinationList: [] },
-      { id: "003", price: 55, isDiscount: false, combinationList: [] },
-      { id: "004", price: 60, isDiscount: false, combinationList: [] },
-      { id: "001", price: 45, isDiscount: false, combinationList: [] },
-    ];
-
-    const expectedItemsAfterPromotion = [
-      { id: "003", price: 82.5, isDiscount: true, combinationList: ["003"] },
-      { id: "003", price: 82.5, isDiscount: true, combinationList: ["003"] },
-      { id: "003", price: 82.5, isDiscount: true, combinationList: ["003"] },
-      { id: "002", price: 75, isDiscount: true, combinationList: ["002"] },
-      {
-        id: "002",
-        price: 190,
-        isDiscount: true,
-        combinationList: ["003", "004", "001"],
-      },
-    ];
-
-    const itemsAfterPromotion = evaluatePromotion2(purchasedItems);
-    expect(itemsAfterPromotion).toEqual(expectedItemsAfterPromotion);
+      const itemsAfterPromotion = evaluatePromotion2(purchasedItems);
+      expect(itemsAfterPromotion).toEqual(expectedDiscountedItems);
+    });
   });
 });

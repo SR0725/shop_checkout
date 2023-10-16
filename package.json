@@ -6,9 +6,12 @@
   "type": "module",
   "scripts": {
     "start": "parcel index.html --open",
-    "build": "parcel build index.html"
+    "build": "parcel build index.html",
+    "jest": "node --experimental-vm-modules node_modules/jest/bin/jest.js"
   },
-  "dependencies": {},
+  "dependencies": {
+    "jest": "^29.7.0"
+  },
   "devDependencies": {
     "@babel/core": "7.2.0",
     "parcel-bundler": "^1.6.1"
