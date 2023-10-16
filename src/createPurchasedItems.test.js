@@ -7,10 +7,10 @@ describe("When createPurchasedItems", () => {
     it("Then return a list of purchased items", () => {
       const productIDs = ["003", "002", "003", "003", "004"];
       const expectedPurchasedItems = [
-        createItem("003", "Cola", 55, 0, false),
+        createItem("003", "Sprite", 55, 0, false),
         createItem("002", "Royal", 50, 0, false),
-        createItem("003", "Cola", 55, 0, false),
-        createItem("003", "Cola", 55, 0, false),
+        createItem("003", "Sprite", 55, 0, false),
+        createItem("003", "Sprite", 55, 0, false),
         createItem("004", "Fanta", 60, 0, false),
       ];
 

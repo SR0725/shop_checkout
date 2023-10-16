@@ -3,12 +3,12 @@ export const createItem = (
   name,
   originalPrice,
   discountPrice,
-  isDisounted
+  isDiscounted
 ) => ({
   id,
   name,
   price: originalPrice - discountPrice,
   originalPrice,
   discountPrice,
-  isDisounted,
+  isDiscounted,
 });

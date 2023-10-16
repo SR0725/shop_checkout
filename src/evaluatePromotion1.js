@@ -3,29 +3,29 @@
  * @returns {object[]}
  */
 export const evaluatePromotion1 = (purchasedItems) => {
-  const clonedItems = purchasedItems.map((item) => ({ ...item }));
-  const combinationItems = [];
+  const cloneItems = purchasedItems.map((item) => ({ ...item }));
 
-  clonedItems.forEach((currentItem, currentIndex) => {
-    if (clonedItems[currentIndex].beCombined) {
-      return;
+  for (const [currentIndex, currentItem] of cloneItems.entries()) {
+    if (currentItem.isDiscounted) {
+      continue;
     }
 
-    const combineItem = clonedItems
-      .slice(currentIndex + 1)
-      .find((item) => item.id === currentItem.id && !item.beCombined);
-
-    if (combineItem) {
-      combineItem.beCombined = true;
-      currentItem.combinationList = [
-        ...currentItem.combinationList,
-        combineItem.id,
-      ];
-      currentItem.isDiscount = true;
-      currentItem.price = currentItem.price * 1.5;
+    const promotionItem = cloneItems.find(
+      (item, index) =>
+        index > currentIndex &&
+        !item.isDiscounted &&
+        item.id === currentItem.id
+    );
+    const debug = cloneItems.findIndex(
+      (item, index) =>
+        index > currentIndex && !item.isDiscounted && item.id === currentItem.id
+    );
+    if (promotionItem) {
+      promotionItem.isDiscounted = true;
+      currentItem.isDiscounted = true;
+      promotionItem.discountPrice = promotionItem.originalPrice / 2;
+      promotionItem.price = promotionItem.price - promotionItem.discountPrice;
     }
-    combinationItems.push(currentItem);
-  });
-
-  return combinationItems;
+  }
+  return cloneItems;
 };

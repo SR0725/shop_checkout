@@ -3,29 +3,21 @@
  * @returns {object[]}
  */
 export const evaluatePromotion2 = (purchasedItems) => {
-  const clonedItems = purchasedItems.map((item) => ({ ...item }));
-
-  const nonDiscountedItems = clonedItems.filter((item) => !item.isDiscount);
+  const nonDiscountedItems = purchasedItems.filter((item) => !item.isDiscounted);
 
   if (nonDiscountedItems.length < 3) {
-    return clonedItems;
+    return purchasedItems;
   }
 
-  const [firstNonDiscountedItem, ...otherNonDiscountedItems] =
-    nonDiscountedItems;
-  const combinationIds = otherNonDiscountedItems.map((item) => item.id);
-  const combinationPrice = otherNonDiscountedItems.reduce(
-    (total, item) => total + item.price,
-    0
-  );
-
-  firstNonDiscountedItem.isDiscount = true;
-  firstNonDiscountedItem.price +=
-    combinationPrice - nonDiscountedItems.length * 5;
-  firstNonDiscountedItem.combinationList = [
-    ...(firstNonDiscountedItem.combinationList || []),
-    ...combinationIds,
-  ];
-
-  return clonedItems.filter((item) => item.isDiscount);
+  return purchasedItems.map((item) => {
+    if(item.isDiscounted){
+      return item;
+    }
+    return {
+      ...item,
+      price: item.price - 5,
+      discountPrice: 5,
+      isDiscounted: true,
+    }
+  });
 };

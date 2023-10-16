@@ -13,6 +13,7 @@ export const createPurchasedItems = (productIDs, productPriceMap) => {
           id,
           originalPrice: product.price,
           discountPrice: 0,
+          isDiscounted: false,
         };
       }
       return null;
